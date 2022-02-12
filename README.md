@@ -6,5 +6,6 @@ Script expect two arguments:
 2) Name of .csv file in which you want to export the data
 
 Arguments for example in this repository: 
+
 URL: "https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=2&xnumnuts=2102"
 Name of .csv: "vysledky_beroun.csv"
