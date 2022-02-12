@@ -56,7 +56,7 @@ def get_political_parties(soup):
 
 def votes_to_int(lists_in_list):
     """
-    changing scraped election data
+    changing scraped votes data
     from str to int
     """
     for e_list in lists_in_list:
