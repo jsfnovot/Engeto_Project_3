@@ -9,7 +9,5 @@ Script expect two arguments:
 
 Arguments for example in this repository: 
 
-
 URL: "https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=2&xnumnuts=2102"
-
-Name of .csv: "vysledky_beroun.csv"
+/ Name of .csv: "vysledky_beroun.csv"
