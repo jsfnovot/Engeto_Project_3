@@ -108,11 +108,11 @@ def scraper():
     for code, url in zip(codes, urls):
         soup_3 = request_bs4(url)
 
-        town = soup_3.find(text=lambda text: text and "Obec:" in text).split("Obec: ")[1].replace("\n", "")
+        town_name = soup_3.find(text=lambda text: text and "Obec:" in text).split("Obec: ")[1].replace("\n", "")
         registered = soup_3.find("td", headers="sa2").get_text().replace("\xa0", "")
         envelopes = soup_3.find("td", headers="sa3").get_text().replace("\xa0", "")
-        valid = soup_3.find("td", headers="sa6").get_text().replace("\xa0", "")
-        row = [code, town, registered, envelopes, valid]
+        valid_votes = soup_3.find("td", headers="sa6").get_text().replace("\xa0", "")
+        row = [code, town_name, registered, envelopes, valid_votes]
 
         i = 1
         while soup_3.find_all("td", headers=f"t{i}sb3"):
@@ -120,6 +120,7 @@ def scraper():
                 row.append(votes.get_text().replace("\xa0", ""))
             i += 1
         rows.append(row)
+
     csv_rows = votes_to_int(rows)
 
     write_to_csv(file_name, csv_header, csv_rows)
