@@ -25,7 +25,7 @@ def check_args() -> bool:
 
 def get_town_codes(soup: BeautifulSoup) -> list:
     """
-    filtering data from soup str
+    filtering data from soup str,
     returns lists of town direct urls
     """
     codes = []
@@ -37,7 +37,7 @@ def get_town_codes(soup: BeautifulSoup) -> list:
 
 def get_town_urls(soup: BeautifulSoup, url: str) -> list:
     """
-    filtering data from soup str
+    filtering data from soup str,
     returns lists of town codes
     """
     base_url = url.split("ps3")[0]
@@ -50,9 +50,8 @@ def get_town_urls(soup: BeautifulSoup, url: str) -> list:
 
 def get_political_parties(soup: BeautifulSoup) -> list:
     """
-    filtering data from soup str
-    returns list of all parties
-    which participated the elections
+    filtering data from soup str,
+    returns list of all parties which participated the elections
     """
     parties = []
     i = 1
@@ -65,8 +64,7 @@ def get_political_parties(soup: BeautifulSoup) -> list:
 
 def votes_to_int(lists_in_list: list) -> list:
     """
-    changing scraped votes data
-    from str to int
+    changing scraped votes data from str to int
     """
     for e_list in lists_in_list:
         e_list[2:] = list(map(int, e_list[2:]))
@@ -75,7 +73,7 @@ def votes_to_int(lists_in_list: list) -> list:
 
 def write_to_csv(file: str, header: list, details: list) -> csv:
     """
-    csv writing function, 3 arguments required
+    csv writing function, 3 arguments required:
     > desired file name
     > list with header and parties names
     > list of scraped election data
