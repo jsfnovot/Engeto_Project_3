@@ -55,11 +55,11 @@ def get_political_parties(soup: BeautifulSoup) -> list:
     which participated the elections
     """
     parties = []
-    a = 1
-    while soup.find_all("td", headers=f"t{a}sb2"):
-        for party in soup.find_all("td", headers=f"t{a}sb2"):
+    i = 1
+    while soup.find_all("td", headers=f"t{i}sb2"):
+        for party in soup.find_all("td", headers=f"t{i}sb2"):
             parties.append((party.get_text()))
-        a += 1
+        i += 1
     return parties
 
 
@@ -103,8 +103,8 @@ def scraper():
     soup_2 = request_bs4(urls[0])
 
     csv_header = ["Town code", "Town name", "Registered", "Envelopes", "Valid votes"]
-    for x in get_political_parties(soup_2):
-        csv_header.append(x)
+    for party in get_political_parties(soup_2):
+        csv_header.append(party)
 
     rows = []
     for code, url in zip(codes, urls):
@@ -116,11 +116,11 @@ def scraper():
         valid = soup_3.find("td", headers="sa6").get_text().replace("\xa0", "")
         row = [code, town, registered, envelopes, valid]
 
-        a = 1
-        while soup_3.find_all("td", headers=f"t{a}sb3"):
-            for votes in soup_3.find_all("td", headers=f"t{a}sb3"):
+        i = 1
+        while soup_3.find_all("td", headers=f"t{i}sb3"):
+            for votes in soup_3.find_all("td", headers=f"t{i}sb3"):
                 row.append(votes.get_text().replace("\xa0", ""))
-            a += 1
+            i += 1
         rows.append(row)
     csv_rows = votes_to_int(rows)
 
