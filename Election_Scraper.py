@@ -85,12 +85,12 @@ def write_to_csv(file: str, header: list, details: list) -> csv:
 
 
 def scraper():
-    # if not check_args():
-    #     quit()
-    # default_url = sys.argv[1]
-    # file_name = sys.argv[2]
-    default_url = "https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=2&xnumnuts=2102"
-    file_name = "vysledky_beroun.csv"
+    if not check_args():
+        quit()
+    default_url = sys.argv[1]
+    file_name = sys.argv[2]
+    # default_url = "https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=2&xnumnuts=2102"
+    # file_name = "vysledky_beroun.csv"
     print(f"Downloading data from selected URL: {default_url}")
     print(f"Saving data in file: {file_name}")
 
