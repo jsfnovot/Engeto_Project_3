@@ -1,6 +1,5 @@
 import csv
 import sys
-import time
 import requests
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
