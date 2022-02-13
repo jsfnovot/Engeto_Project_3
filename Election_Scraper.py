@@ -128,4 +128,4 @@ def scraper():
 
 if __name__ == "__main__":
     scraper()
-    print("Quitting Election_Scraper...")
+    print("Quitting Election_Scraper.py...")
