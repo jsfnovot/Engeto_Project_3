@@ -105,14 +105,14 @@ def scraper():
         csv_header.append(party)
 
     rows = []
-    for code, url in zip(codes, urls):
+    for town_code, url in zip(codes, urls):
         soup_3 = request_bs4(url)
 
         town_name = soup_3.find(text=lambda text: text and "Obec:" in text).split("Obec: ")[1].replace("\n", "")
         registered = soup_3.find("td", headers="sa2").get_text().replace("\xa0", "")
         envelopes = soup_3.find("td", headers="sa3").get_text().replace("\xa0", "")
         valid_votes = soup_3.find("td", headers="sa6").get_text().replace("\xa0", "")
-        row = [code, town_name, registered, envelopes, valid_votes]
+        row = [town_code, town_name, registered, envelopes, valid_votes]
 
         i = 1
         while soup_3.find_all("td", headers=f"t{i}sb3"):
