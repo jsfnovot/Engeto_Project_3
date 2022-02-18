@@ -2,7 +2,7 @@ Script for scraping data of Czech parlament elections of 2017.
 
 External packages needed to run the script can be installed using following command: $ pip install -r requirements.txt
 
-**How it works:**
+**How the script works:**
 
 You have to choose a district from this page (https://volby.cz/pls/ps2017nss/ps3?xjazyk=CZ) by pressing "X" next to it and get it's URL.
 
