@@ -8,4 +8,5 @@ Script requires two arguments:
 2) Name of .csv file in which you want to export the data
 
 Following command can be used to get a csv file with same result as you can see in this repository:
+
 python3 Election_Scraper.py "https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=2&xnumnuts=2102" "vysledky_beroun.csv"
