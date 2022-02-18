@@ -1,4 +1,4 @@
-Third project for Engeto Python Academy @ https://engeto.cz/python-akademie/ Script for scraping data of Czech parlament elections of 2017.
+Third project for Engeto Python Academy @ https://engeto.cz/python-akademie/. Script for scraping data of Czech parlament elections of 2017.
 
 External packages needed to run the script can be installed using following command: $ pip install -r requirements.txt
 
