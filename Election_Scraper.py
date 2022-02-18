@@ -19,13 +19,24 @@ def check_args() -> bool:
         print("Two arguments expected, can't run scraper.")
         return False
     elif "https://volby.cz/pls/ps2017nss/" not in sys.argv[1]:
-        print("First argument should be URL, second argument name of csv file.")
-        return False
-    elif ".csv" not in sys.argv[2]:
-        print("Second argument should be a name of csv file.")
+        print("First argument should be a valid district URL.")
         return False
     else:
         return True
+
+
+def check_file_name(name, soup):
+    """
+    checking if name contains a name of district and suffix ".csv"
+    """
+    district = soup.find(text=lambda text: text and 'Okres:' in text).split('Okres: ')[1].replace('\n', '')
+    if district.lower() not in name.lower() or ".csv" not in name:
+        print("File name must contain a district name and .csv suffix.\n"
+              f"Renaming to '{district.lower()}.csv'")
+        file = f"{district.lower()}.csv"
+        return str(file)
+    else:
+        return name.lower()
 
 
 def get_town_codes(soup: BeautifulSoup) -> list:
@@ -127,12 +138,10 @@ def scraper():
     if not check_args():
         sys.exit()
     default_url = sys.argv[1]
-    file_name = sys.argv[2]
-    # default_url = "https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=2&xnumnuts=2102"
-    # file_name = "vysledky_beroun.csv"
     print(f"Downloading data from selected URL: {default_url}")
-
     soup_1 = request_bs4(default_url)
+    file_name = check_file_name(sys.argv[2], soup_1)
+
     codes = get_town_codes(soup_1)
     urls = get_town_urls(soup_1, default_url)
 
