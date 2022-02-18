@@ -6,7 +6,12 @@ from bs4 import BeautifulSoup
 
 
 def request_bs4(url: str) -> BeautifulSoup:
-    return BeautifulSoup(requests.get(url).text, "html.parser")
+    try:
+        req = requests.get(url)
+    except Exception as ex:
+        print(f"An error occurred: {ex}.")
+        sys.exit()
+    return BeautifulSoup(req.text, "html.parser")
 
 
 def check_args() -> bool:
@@ -25,8 +30,7 @@ def check_args() -> bool:
 
 def get_town_codes(soup: BeautifulSoup) -> list:
     """
-    filtering data from soup str,
-    returns lists of town direct urls
+    returns lists of town direct urls in chosen district
     """
     codes = []
     for x in soup.find_all("td", class_="cislo"):
@@ -37,20 +41,22 @@ def get_town_codes(soup: BeautifulSoup) -> list:
 
 def get_town_urls(soup: BeautifulSoup, url: str) -> list:
     """
-    filtering data from soup str,
-    returns lists of town codes
+    returns lists of all town codes in chosen district
     """
     base_url = url.split("ps3")[0]
     urls = []
     for x in soup.find_all("td", class_="cislo"):
         for a in x.find_all("a"):
             urls.append(urljoin(base_url, a.get("href")))
-    return urls
+    if urls:
+        return urls
+    else:
+        print(f"An error occurred.")
+        sys.exit()
 
 
 def get_political_parties(soup: BeautifulSoup) -> list:
     """
-    filtering data from soup str,
     returns list of all parties which participated the elections
     """
     parties = []
@@ -60,6 +66,39 @@ def get_political_parties(soup: BeautifulSoup) -> list:
             parties.append((party.get_text()))
         i += 1
     return parties
+
+
+def get_town_details(town_codes: list, town_urls: list) -> list:
+    """
+    returns list of election details from every town in chosen district
+    """
+    rows = []
+    for town_code, url in zip(town_codes, town_urls):
+        soup_3 = request_bs4(url)
+
+        town_name = soup_3.find(text=lambda text: text and "Obec:" in text).split("Obec: ")[1].replace("\n", "")
+        registered = soup_3.find("td", headers="sa2").get_text().replace("\xa0", "")
+        envelopes = soup_3.find("td", headers="sa3").get_text().replace("\xa0", "")
+        valid_votes = soup_3.find("td", headers="sa6").get_text().replace("\xa0", "")
+        row = [town_code, town_name, registered, envelopes, valid_votes]
+
+        i = 1
+        while soup_3.find_all("td", headers=f"t{i}sb3"):
+            for votes in soup_3.find_all("td", headers=f"t{i}sb3"):
+                row.append(votes.get_text().replace("\xa0", ""))
+            i += 1
+        rows.append(row)
+    return rows
+
+
+def make_header(soup: BeautifulSoup) -> list:
+    """
+    returns list with header and parties names
+    """
+    header = ["Town code", "Town name", "Registered", "Envelopes", "Valid votes"]
+    for party in get_political_parties(soup):
+        header.append(party)
+    return header
 
 
 def votes_to_int(lists_in_list: list) -> list:
@@ -86,13 +125,12 @@ def write_to_csv(file: str, header: list, details: list) -> csv:
 
 def scraper():
     if not check_args():
-        quit()
+        sys.exit()
     default_url = sys.argv[1]
     file_name = sys.argv[2]
     # default_url = "https://volby.cz/pls/ps2017nss/ps32?xjazyk=CZ&xkraj=2&xnumnuts=2102"
     # file_name = "vysledky_beroun.csv"
     print(f"Downloading data from selected URL: {default_url}")
-    print(f"Saving data in file: {file_name}")
 
     soup_1 = request_bs4(default_url)
     codes = get_town_codes(soup_1)
@@ -100,32 +138,12 @@ def scraper():
 
     soup_2 = request_bs4(urls[0])
 
-    csv_header = ["Town code", "Town name", "Registered", "Envelopes", "Valid votes"]
-    for party in get_political_parties(soup_2):
-        csv_header.append(party)
+    csv_header = make_header(soup_2)
+    csv_rows = votes_to_int(get_town_details(codes, urls))
 
-    rows = []
-    for town_code, url in zip(codes, urls):
-        soup_3 = request_bs4(url)
-
-        town_name = soup_3.find(text=lambda text: text and "Obec:" in text).split("Obec: ")[1].replace("\n", "")
-        registered = soup_3.find("td", headers="sa2").get_text().replace("\xa0", "")
-        envelopes = soup_3.find("td", headers="sa3").get_text().replace("\xa0", "")
-        valid_votes = soup_3.find("td", headers="sa6").get_text().replace("\xa0", "")
-        row = [town_code, town_name, registered, envelopes, valid_votes]
-
-        i = 1
-        while soup_3.find_all("td", headers=f"t{i}sb3"):
-            for votes in soup_3.find_all("td", headers=f"t{i}sb3"):
-                row.append(votes.get_text().replace("\xa0", ""))
-            i += 1
-        rows.append(row)
-
-    csv_rows = votes_to_int(rows)
-
+    print(f"Saving data in file: {file_name}")
     write_to_csv(file_name, csv_header, csv_rows)
 
 
 if __name__ == "__main__":
     scraper()
-    print("Quitting Election_Scraper.py...")
