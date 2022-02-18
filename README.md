@@ -4,7 +4,7 @@ External packages needed to run the script can be installed using following comm
 
 **How the script works:**
 
-You have to choose a district from this page (https://volby.cz/pls/ps2017nss/ps3?xjazyk=CZ) by pressing "X" next to it and get it's URL.
+Choose a district for scraping from this page (https://volby.cz/pls/ps2017nss/ps3?xjazyk=CZ) by pressing "X" next to it and get it's URL.
 
 Script requires two arguments:
 1) URL of district as mentioned above
