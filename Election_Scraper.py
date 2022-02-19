@@ -30,10 +30,10 @@ def check_file_name(name, soup):
     checking if name contains a name of district and suffix ".csv"
     """
     district = soup.find(text=lambda text: text and 'Okres:' in text).split('Okres: ')[1].replace('\n', '')
-    if district.lower() not in name.lower() or ".csv" not in name:
-        print("File name must contain a district name and .csv suffix.\n"
-              f"Renaming to '{district.lower()}.csv'")
-        file = f"{district.lower()}.csv"
+    if district.lower().replace(" ", "_") not in name.lower() or ".csv" not in name:
+        print("File name must contain a district name and .csv suffix.")
+        file = f"{district.lower()}.csv".replace(" ", "_")
+        print(f"Renaming to {file}")
         return str(file)
     else:
         return name.lower()
