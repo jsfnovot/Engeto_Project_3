@@ -31,7 +31,7 @@ def check_file_name(name: str, soup: BeautifulSoup) -> str:
     """
     district = soup.find(text=lambda text: text and 'Okres:' in text).split('Okres: ')[1].replace('\n', '')
     if district.lower().replace(" ", "_") not in name.lower() or ".csv" not in name:
-        print("File name must contain a district name and .csv suffix.")
+        print("Second argument must contain a district name and .csv suffix.")
         file = f"{district.lower()}.csv".replace(" ", "_")
         print(f"Renaming to {file}")
         return str(file)
