@@ -25,7 +25,7 @@ def check_args() -> bool:
         return True
 
 
-def check_file_name(name, soup):
+def check_file_name(name: str, soup: BeautifulSoup) -> str:
     """
     checking if name contains a name of district and suffix ".csv"
     """
