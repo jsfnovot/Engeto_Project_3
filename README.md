@@ -8,7 +8,7 @@ Choose a district for scraping from this page (https://volby.cz/pls/ps2017nss/ps
 
 Script requires two arguments:
 1) URL of district as mentioned above
-2) Name of .csv file in which you want to export the data (name must contain a desired district name and .csv suffix)
+2) Name of .csv file in which you want to export the data (name must contain a desired chosen name and .csv suffix)
 
 Following command can be used to get a csv file with same result as you can see in this repository:
 
