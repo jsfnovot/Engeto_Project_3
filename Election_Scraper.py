@@ -28,6 +28,7 @@ def check_args() -> bool:
 def check_file_name(name: str, soup: BeautifulSoup) -> str:
     """
     checking if name contains a name of district and suffix ".csv"
+    if not renaming the file to "<district>.csv"
     """
     district = soup.find(text=lambda text: text and 'Okres:' in text).split('Okres: ')[1].replace('\n', '')
     if district.lower().replace(" ", "_") not in name.lower() or ".csv" not in name:
